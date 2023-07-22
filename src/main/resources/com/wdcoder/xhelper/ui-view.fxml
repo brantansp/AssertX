@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wdcoder.xhelper.Controller">
+    <TabPane prefHeight="414.0" prefWidth="640.0" tabClosingPolicy="UNAVAILABLE">
+        <Tab text="Action">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                <VBox fx:id="root" alignment="CENTER">
+                    <AnchorPane prefHeight="265.0" prefWidth="550.0" VBox.vgrow="ALWAYS">
+                        <RadioButton fx:id="chromeRadioButton" layoutX="14.0" layoutY="4.0" mnemonicParsing="false" onAction="#setBrowser" selected="true" text="Chrome"><toggleGroup><ToggleGroup fx:id="toggleGroup1" /></toggleGroup></RadioButton>
+                        <RadioButton fx:id="firefoxRadioButton" layoutX="121.0" layoutY="4.0" mnemonicParsing="false" onAction="#setBrowser" text="FireFox" toggleGroup="$toggleGroup1" />
+                        <RadioButton fx:id="edgeRadioButton" layoutX="228.0" layoutY="4.0" mnemonicParsing="false" onAction="#setBrowser" text="EDGE" toggleGroup="$toggleGroup1" />
+
+                        <Button fx:id="openBrowserButton" layoutX="12.0" layoutY="29.0" mnemonicParsing="false" onAction="#openBrowser" text="Open Browser" />
+                        <Button fx:id="closeBrowserButton" disable="true" layoutX="109.0" layoutY="29.0" mnemonicParsing="false" onAction="#closeBrowser" text="Close Browser" />
+                        <Separator layoutX="-2.0" layoutY="22.0" prefHeight="7.0" prefWidth="640.0" />
+                        <Button fx:id="webDriverActionsExecute" disable="true" layoutX="537.0" layoutY="29.0" mnemonicParsing="false" onAction="#webDriverActionExecute" prefHeight="60.0" prefWidth="84.0" text="Execute" />
+                        <Button fx:id="webElementActionExecute" disable="true" layoutX="289.0" layoutY="151.0" mnemonicParsing="false" onAction="#executeWebElementAction" text="Execute" />
+                        <TextField fx:id="textToSend" disable="true" layoutX="11.0" layoutY="123.0" prefHeight="26.0" prefWidth="384.0" promptText="Enter Text to Send" />
+                        <TextField fx:id="elementLocator" disable="true" layoutX="11.0" layoutY="95.0" prefHeight="26.0" prefWidth="609.0" promptText="Element Locator : By Identifier:Locator or XPath" />
+                        <TextField fx:id="webDriverEnterUrl" disable="true" layoutX="11.0" layoutY="64.0" prefHeight="26.0" prefWidth="521.0" />
+                        <ComboBox fx:id="webElementAction" disable="true" layoutX="401.0" layoutY="122.0" prefHeight="28.0" prefWidth="219.0" />
+                        <TextArea fx:id="consoleOutput" layoutX="4.0" layoutY="178.0" prefHeight="208.0" prefWidth="621.0" />
+                        <ComboBox fx:id="webDriverActions" disable="true" layoutX="279.0" layoutY="28.0" prefHeight="28.0" prefWidth="252.0" />
+                        <Label fx:id="driverLabel" disable="true" layoutX="239.0" layoutY="33.0" text="driver :" />
+                        <Button fx:id="clearConsole" layoutX="564.0" layoutY="187.0" mnemonicParsing="false" onAction="#ClearConsoleOutput" onMouseExited="#consoleClearButtonSetOpacityToHalf" onMouseMoved="#consoleClearButtonSetOpacityToFull" opacity="0.5" text="Clear" />
+                        <Button fx:id="copyConsole" layoutX="515.0" layoutY="187.0" mnemonicParsing="false" onAction="#copyConsoleTextToClipboard" onMouseExited="#consoleCopyButtonSetOpacityToHalf" onMouseMoved="#consoleCopyButtonSetOpacityToFull" opacity="0.5" text="Copy" />
+                    </AnchorPane>
+                </VBox>
+            </AnchorPane>
+        </Tab>
+        <Tab text="Configuration">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                <ButtonBar layoutX="110.0" layoutY="210.0" prefHeight="40.0" prefWidth="200.0" />
+            </AnchorPane>
+        </Tab>
+    </TabPane>
+</StackPane>
