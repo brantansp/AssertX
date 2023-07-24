@@ -1,4 +1,4 @@
-package com.wdcoder.xhelper;
+package com.wdcoder.assertx;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +15,7 @@ public class UIApplication extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(UIApplication.class.getResource("ui-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 630, 420);
-        stage.setTitle("XPath Validator");
+        stage.setTitle("AssertX");
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
@@ -23,7 +23,7 @@ public class UIApplication extends Application {
         TextArea consoleTextArea = (TextArea) fxmlLoader.getNamespace().get("consoleOutput");
         consoleTextArea.setEditable(true);
 
-        PrintStream printStream = new PrintStream(new com.wdcoder.xhelper.TextAreaOutputStream(consoleTextArea));
+        PrintStream printStream = new PrintStream(new com.wdcoder.assertx.TextAreaOutputStream(consoleTextArea));
 
         System.setOut(printStream);
         System.setErr(printStream);

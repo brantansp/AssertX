@@ -1,4 +1,4 @@
-package com.wdcoder.xhelper;
+package com.wdcoder.assertx;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.*;

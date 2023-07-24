@@ -1,4 +1,4 @@
-package com.wdcoder.xhelper;
+package com.wdcoder.assertx;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

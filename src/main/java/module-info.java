@@ -8,6 +8,6 @@ module com.wdcoder.xhelper {
     requires org.seleniumhq.selenium.chrome_driver;
 
 
-    opens com.wdcoder.xhelper to javafx.fxml;
-    exports com.wdcoder.xhelper;
+    opens com.wdcoder.assertx to javafx.fxml;
+    exports com.wdcoder.assertx;
 }
