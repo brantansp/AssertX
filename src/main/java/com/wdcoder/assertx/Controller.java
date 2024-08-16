@@ -67,8 +67,93 @@ public class Controller implements Initializable {
     WebDriverTools tools = new WebDriverTools();
     @FXML
     public ComboBox<String> webElementAction;
-    String[] webElementActionChoices = {"click()", "clickAll()", "sendKeys(value)", "clear()", "submit()", "getText()", "isDisplayed()", "isSelected()"};
-    String[] webDriverActionChoices = {"get(url)", "navigate().to(url)", "navigate().forward()", "navigate().back()", "navigate().refresh()", "getTitle()","getCurrentUrl()"/*,"getPageSource()"*/,"getWindowHandle()","getWindowHandles()","fullScreen()","maximize()","minimize()","getSize()","getPosition()","getCookies()","addCookie(key,value)","deleteCookie(key,value)","getCookieNamed(value)","deleteAllCookies()","switchToFrame(value)","switchToDefaultContent()","switchToActiveElement()","switchToParentFrame()","switchToNewWindow(WindowType.valueOf(window))","switchToWindow(value)","alert().accept()","alert().getText()","alert().sendKeys(value)","alert().dismiss()","alert().equals(value)"};
+    String[] webElementActionChoices = {"click()",
+            "clickAll()",
+            "sendKeys(value)",
+            "clear()",
+            "submit()",
+            "getText()",
+            "isDisplayed()",
+            "isSelected()",
+            "isEnabled()",
+            "getAttribute(value)",
+            "getCssValue(value)",
+            //"findElement()",
+            //"findElements()",
+            "getTagName()",
+            "getLocation()",
+            "getSize()",
+            "getRect()",
+            "getAriaRole()",
+            "getAccessibleName()",
+            "getScreenshotAs()",
+            "getDomAttribute()",
+            "getDomProperty()",
+            "getShadowRoot()",
+
+            // Actions
+            "actionClick()",
+            "actionSendKeys(value)",
+            "contextClick()",
+            "doubleClick()",
+            "moveToElement()",
+            "clickAndHold()",
+            "dragAndDrop(src,target)",
+            "moveByOffset(x,y)",
+            "moveToLocation(x,y)",
+            "pause(time)",
+
+            //Javascript executor
+            "executeScript(script)",
+            "jsClick()",
+            "jsSendKeys(value)",
+            "jsHighlight()",
+            "jsScrollIntoView()",
+            "jsScrollBy(pixels)",
+            "jsScrollTo(pixels)",
+            "jsScrollTop()",
+            "jsScrollBottom()",
+            "jsScrollLeft()",
+            "jsScrollRight()",
+            "jsGetBorderColor()",
+            "jsGetBackgroundColor()",
+            "jsGetColor()",
+            "jsGetComputedStyle()",
+            "jsGetInnerText()",
+            "jsGetOuterText()",
+            "jsGetFontFamily()",
+            "jsGetFontSize()"};
+    String[] webDriverActionChoices = {
+            "get(url)",
+            "navigate().to(url)",
+            "navigate().forward()",
+            "navigate().back()",
+            "navigate().refresh()",
+            "getTitle()",
+            "getCurrentUrl()"/*,"getPageSource()"*/,
+            "getWindowHandle()",
+            "getWindowHandles()",
+            "fullScreen()",
+            "maximize()",
+            "minimize()",
+            "getSize()",
+            "getPosition()",
+            "getCookies()",
+            "addCookie(key,value)",
+            "deleteCookie(key,value)",
+            "getCookieNamed(value)",
+            "deleteAllCookies()",
+            "switchToFrame(value)",
+            "switchToDefaultContent()",
+            "switchToActiveElement()",
+            "switchToParentFrame()",
+            "switchToNewWindow(WindowType.valueOf(window))",
+            "switchToWindow(value)",
+            "alert().accept()",
+            "alert().getText()",
+            "alert().sendKeys(value)",
+            "alert().dismiss()",
+            "alert().equals(value)"};
 
 
     @Override
@@ -83,11 +168,54 @@ public class Controller implements Initializable {
         webElementActionExecute.disableProperty().bind(elementLocator.textProperty().isEmpty());
 
         webElementAction.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.equalsIgnoreCase("sendKeys(value)")) {
-                textToSend.setDisable(true);
-                textToSend.setText("");
-            } else {
+            if (newValue.equalsIgnoreCase("sendKeys(value)")) {
+                textToSend.clear();
                 textToSend.setDisable(false);
+                textToSend.setPromptText("Enter Text to Send");
+            } else if (newValue.equalsIgnoreCase("dragAndDrop(src,target)")) {
+                textToSend.clear();
+                textToSend.setDisable(false);
+                textToSend.setPromptText("Please enter the target element locator");
+            } else if (newValue.equalsIgnoreCase("moveByOffset(x,y)")) {
+                textToSend.clear();
+                textToSend.setDisable(false);
+                elementLocator.clear();
+                elementLocator.setPromptText("Please enter the x coordinate to move the element by");
+                textToSend.setPromptText("Please enter the x coordinate to move the element by");
+            } else if (newValue.equalsIgnoreCase("moveToLocation(x,y)")) {
+                textToSend.clear();
+                textToSend.setDisable(false);
+                textToSend.setPromptText("Please enter the x and y coordinates (comma-separated) to move the element to");
+            } else if (newValue.equalsIgnoreCase("jsSendKeys(value)")) {
+                textToSend.clear();
+                textToSend.setDisable(false);
+                textToSend.setPromptText("Please enter the value to send to the element using JavaScript");
+            } else if (newValue.equalsIgnoreCase("executeScript(script)")) {
+                textToSend.clear();
+                textToSend.setDisable(false);
+                textToSend.setPromptText("Please enter the JavaScript script to execute");
+            } else if (newValue.equalsIgnoreCase("jsScrollBy(pixels)")) {
+                textToSend.clear();
+                textToSend.setDisable(false);
+                textToSend.setPromptText("Please enter the number of pixels to scroll by");
+            } else if (newValue.equalsIgnoreCase("jsScrollTo(pixels)")) {
+                textToSend.clear();
+                textToSend.setDisable(false);
+                textToSend.setPromptText("Please enter the number of pixels to scroll to");
+            } else if (newValue.equalsIgnoreCase("getAttribute(value)")) {
+                textToSend.clear();
+                textToSend.setDisable(false);
+                textToSend.setText("Please provide any of these attribute - class, id, name, href, src, style, title, value, placeholder, type, checked, disabled, selected, data-*, aria-*, *");
+            } else if (newValue.equalsIgnoreCase("getCssValue(value)")) {
+                textToSend.clear();
+                textToSend.setDisable(false);
+                textToSend.setText("Please provide any of these css property - background-color, color, display, font-size, font-weight, height, width, margin, padding, border, border-color, border-width, border-style, border-radius, opacity, visibility, position, top, bottom, left, right, z-index, overflow, text-align, text-decoration, text-transform, line-height, letter-spacing, word-spacing, white-space, text-overflow, list-style-type, list-style-position, list-style-image");
+            } else if (newValue.equalsIgnoreCase("pause(time)")) {
+                textToSend.clear();
+                textToSend.setDisable(false);
+                textToSend.setPromptText("Please enter the time in milliseconds to pause");
+            } else {
+                textToSend.setDisable(true);
             }
         });
 
@@ -95,25 +223,25 @@ public class Controller implements Initializable {
             if (newValue.equalsIgnoreCase("get(url)") || newValue.equalsIgnoreCase("navigate().to(url)")) {
                 webDriverEnterUrl.setDisable(false);
                 webDriverEnterUrl.setPromptText("Please enter URL with http or https or just domain name");
-            } else if (newValue.equalsIgnoreCase("deleteCookie(key,value)") || newValue.equalsIgnoreCase("addCookie(key,value)")){
+            } else if (newValue.equalsIgnoreCase("deleteCookie(key,value)") || newValue.equalsIgnoreCase("addCookie(key,value)")) {
                 webDriverEnterUrl.setPromptText("Please enter the cookie key and value in key,value format");
                 webDriverEnterUrl.setDisable(false);
-            } else if (newValue.equalsIgnoreCase("getCookieNamed(value)")){
+            } else if (newValue.equalsIgnoreCase("getCookieNamed(value)")) {
                 webDriverEnterUrl.setPromptText("Please enter the cookie key");
                 webDriverEnterUrl.setDisable(false);
-            } else if (newValue.equalsIgnoreCase("switchToWindow(value)")){
+            } else if (newValue.equalsIgnoreCase("switchToWindow(value)")) {
                 webDriverEnterUrl.setPromptText("Please enter the window name or handle from getWindowHandle() method");
                 webDriverEnterUrl.setDisable(false);
-            } else if (newValue.equalsIgnoreCase("switchToFrame(value)")){
+            } else if (newValue.equalsIgnoreCase("switchToFrame(value)")) {
                 webDriverEnterUrl.setPromptText("Please enter the frame name or id");
                 webDriverEnterUrl.setDisable(false);
-            } else if (newValue.equalsIgnoreCase("switchToNewWindow(WindowType.valueOf(window))")){
+            } else if (newValue.equalsIgnoreCase("switchToNewWindow(WindowType.valueOf(window))")) {
                 webDriverEnterUrl.setPromptText("Please enter the WindowType as window or tab");
                 webDriverEnterUrl.setDisable(false);
-            } else if (newValue.equalsIgnoreCase("alert().sendKeys(value)")){
+            } else if (newValue.equalsIgnoreCase("alert().sendKeys(value)")) {
                 webDriverEnterUrl.setPromptText("Please enter value to be sent to alert()");
                 webDriverEnterUrl.setDisable(false);
-            } else if (newValue.equalsIgnoreCase("alert().equals(value)")){
+            } else if (newValue.equalsIgnoreCase("alert().equals(value)")) {
                 webDriverEnterUrl.setPromptText("Please enter the value to compare with alert().equals()");
                 webDriverEnterUrl.setDisable(false);
             } else {
