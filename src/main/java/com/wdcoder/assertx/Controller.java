@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -205,11 +206,13 @@ public class Controller implements Initializable {
             } else if (newValue.equalsIgnoreCase("getAttribute(value)")) {
                 textToSend.clear();
                 textToSend.setDisable(false);
-                textToSend.setText("Please provide any of these attribute - class, id, name, href, src, style, title, value, placeholder, type, checked, disabled, selected, data-*, aria-*, *");
+                System.out.println("Please provide any of these attribute : \nclass, id, name, href, src, style, title, value, placeholder, type, checked, disabled, selected, data-*, aria-*, *");
+                textToSend.setPromptText("Please provide any of these attribute : class, id, name, href, src, style, title, value, placeholder, type, checked, disabled, selected, data-*, aria-*, *");
             } else if (newValue.equalsIgnoreCase("getCssValue(value)")) {
                 textToSend.clear();
                 textToSend.setDisable(false);
-                textToSend.setText("Please provide any of these css property - background-color, color, display, font-size, font-weight, height, width, margin, padding, border, border-color, border-width, border-style, border-radius, opacity, visibility, position, top, bottom, left, right, z-index, overflow, text-align, text-decoration, text-transform, line-height, letter-spacing, word-spacing, white-space, text-overflow, list-style-type, list-style-position, list-style-image");
+                System.out.println("Please provide any of these css property : \nbackground-color, color, display, font-size, font-weight, height, width, margin, padding, border, border-color, border-width, border-style, border-radius, opacity, visibility, position, top, bottom, left, right, z-index, overflow, text-align, text-decoration, text-transform, line-height, letter-spacing, word-spacing, white-space, text-overflow, list-style-type, list-style-position, list-style-image");
+                textToSend.setPromptText("Please provide any of these css property : background-color, color, display, font-size, font-weight, height, width, margin, padding, border, border-color, border-width, border-style, border-radius, opacity, visibility, position, top, bottom, left, right, z-index, overflow, text-align, text-decoration, text-transform, line-height, letter-spacing, word-spacing, white-space, text-overflow, list-style-type, list-style-position, list-style-image");
             } else if (newValue.equalsIgnoreCase("pause(time)")) {
                 textToSend.clear();
                 textToSend.setDisable(false);
@@ -277,6 +280,8 @@ public class Controller implements Initializable {
         webDriverActionsExecute.setDisable(false);
         webDriverEnterUrl.setDisable(false);
         elementLocator.setDisable(false);
+        webDriverActions.getSelectionModel().selectNext();
+        webDriverActions.getSelectionModel().selectPrevious();
         //webElementAction.setDisable(false);
         //webElementActionExecute.setDisable(false);
     }
@@ -351,23 +356,26 @@ public class Controller implements Initializable {
     }
 
     public void copyConsoleTextToClipboard(ActionEvent actionEvent) {
-        String consoleText = consoleOutput.getText();
-        if (!consoleText.isEmpty()) {
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            StringSelection stringSelection = new StringSelection(consoleText);
-            clipboard.setContents(stringSelection, null);
-        } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Info");
-            alert.setHeaderText("Console is empty");
-            alert.setContentText("Nothing to copy !!!");
-            alert.showAndWait();
+        String consoleText;
+        try {
+            consoleText = consoleOutput.getText();
+            if (!consoleText.isEmpty()) {
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                StringSelection stringSelection = new StringSelection(consoleText);
+                clipboard.setContents(stringSelection, null);
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Info");
+                alert.setHeaderText("Console is empty");
+                alert.setContentText("Nothing to copy !!!");
+                alert.showAndWait();
+            }
+        } finally {
+            // No additional code beyond the immediate scope of the try-with-resources statement
         }
     }
 
     public void ClearConsoleOutput(ActionEvent actionEvent) {
         consoleOutput.setText("");
     }
-
-
 }

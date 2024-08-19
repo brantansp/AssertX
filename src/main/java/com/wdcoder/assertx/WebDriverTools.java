@@ -665,13 +665,13 @@ public class WebDriverTools {
         System.out.printf("Navigated to %s%n", url);
     }
 
-    public void getAttribute(String xpath, String value) {
+    public void getAttribute(String xpath, String attributeName) {
         WebElement element = driver.findElement(By.xpath(xpath));
         try {
-            String attributeValue = element.getAttribute(value);
-            System.out.println("Attribute value: " + attributeValue);
+            String attributeValue = element.getAttribute(attributeName);
+            System.out.println("Attribute "+attributeName+"'s value: " + attributeValue);
         } catch (NullPointerException e) {
-            System.out.println("Element does not have the 'value' attribute");
+            System.out.println("Element does not have the '"+attributeName+"' attribute");
         }
     }
 
@@ -679,9 +679,9 @@ public class WebDriverTools {
         WebElement element = driver.findElement(By.xpath(xpath));
         try {
             String cssValue = element.getCssValue(cssPropertyName);
-            System.out.println("CSS color value: " + cssValue);
+            System.out.println("CSS "+cssPropertyName+"'s value : " + cssValue);
         } catch (NullPointerException e) {
-            System.out.println("Element does not have the 'color' CSS property");
+            System.out.println("Element does not have the '"+cssPropertyName+"' CSS property");
         }
     }
 
