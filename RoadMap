@@ -1,3 +1,7 @@
 RoadMap Items
 
 1. Implement the new design for dark mode
+X 2. Populate secondary input with a dynamic drop down and input field. i.e for getCssProperty() method
+3. Add taskkill
+4. Implement Easy switch tab
+X 5. Get all css property

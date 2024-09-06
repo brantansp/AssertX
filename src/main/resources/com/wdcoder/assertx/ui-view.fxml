@@ -27,6 +27,7 @@
                         <Label fx:id="driverLabel" disable="true" layoutX="239.0" layoutY="33.0" text="driver :" />
                         <Button fx:id="clearConsole" layoutX="564.0" layoutY="187.0" mnemonicParsing="false" onAction="#ClearConsoleOutput" onMouseExited="#consoleClearButtonSetOpacityToHalf" onMouseMoved="#consoleClearButtonSetOpacityToFull" opacity="0.5" text="Clear" />
                         <Button fx:id="copyConsole" layoutX="515.0" layoutY="187.0" mnemonicParsing="false" onAction="#copyConsoleTextToClipboard" onMouseExited="#consoleCopyButtonSetOpacityToHalf" onMouseMoved="#consoleCopyButtonSetOpacityToFull" opacity="0.5" text="Copy" />
+                        <ToggleButton fx:id="darkLightMode" layoutX="531.0" layoutY="1.0" mnemonicParsing="false" selected="true" text="Dark Mode" />
                     </AnchorPane>
                 </VBox>
             </AnchorPane>

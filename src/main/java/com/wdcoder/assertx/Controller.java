@@ -11,7 +11,9 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Shape;
+import javafx.scene.shape.Rectangle;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -53,6 +55,7 @@ public class Controller implements Initializable {
     public RadioButton firefoxRadioButton;
     @FXML
     public RadioButton edgeRadioButton;
+    public ToggleButton darkLightMode;
 
     String selectedBrowser = "Chrome";
 
@@ -79,6 +82,7 @@ public class Controller implements Initializable {
             "isEnabled()",
             "getAttribute(value)",
             "getCssValue(value)",
+            "getCssProperties()",
             //"findElement()",
             //"findElements()",
             "getTagName()",
@@ -144,12 +148,13 @@ public class Controller implements Initializable {
             "deleteCookie(key,value)",
             "getCookieNamed(value)",
             "deleteAllCookies()",
+            "switchToWindow(value)",
+            "switchNextWindow()",
             "switchToFrame(value)",
             "switchToDefaultContent()",
             "switchToActiveElement()",
             "switchToParentFrame()",
             "switchToNewWindow(WindowType.valueOf(window))",
-            "switchToWindow(value)",
             "alert().accept()",
             "alert().getText()",
             "alert().sendKeys(value)",
@@ -167,6 +172,19 @@ public class Controller implements Initializable {
         webDriverActions.getSelectionModel().selectFirst();
         webElementAction.disableProperty().bind(elementLocator.textProperty().isEmpty());
         webElementActionExecute.disableProperty().bind(elementLocator.textProperty().isEmpty());
+
+
+
+        darkLightMode.selectedProperty().addListener((obs, oldValue, newValue) -> {
+            System.out.println("Dark mode selected: " + newValue);
+            if (newValue) {
+                switchToLightMode();
+            } else {
+                switchToDarkMode();
+            }
+        });
+
+        darkLightMode.setSelected(true);
 
         webElementAction.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.equalsIgnoreCase("sendKeys(value)")) {
@@ -213,6 +231,10 @@ public class Controller implements Initializable {
                 textToSend.setDisable(false);
                 System.out.println("Please provide any of these css property : \nbackground-color, color, display, font-size, font-weight, height, width, margin, padding, border, border-color, border-width, border-style, border-radius, opacity, visibility, position, top, bottom, left, right, z-index, overflow, text-align, text-decoration, text-transform, line-height, letter-spacing, word-spacing, white-space, text-overflow, list-style-type, list-style-position, list-style-image");
                 textToSend.setPromptText("Please provide any of these css property : background-color, color, display, font-size, font-weight, height, width, margin, padding, border, border-color, border-width, border-style, border-radius, opacity, visibility, position, top, bottom, left, right, z-index, overflow, text-align, text-decoration, text-transform, line-height, letter-spacing, word-spacing, white-space, text-overflow, list-style-type, list-style-position, list-style-image");
+            } else if (newValue.equalsIgnoreCase("getCssProperties()")) {
+                textToSend.clear();
+                textToSend.setDisable(false);
+                textToSend.setPromptText("Css property : border-top-color, border-right-color, border-bottom-color, border-left-color, border-right, border-bottom, border-left, border-top-right-radius, border-bottom-right-radius, border-width, border-top, border-left-color, border-right-color, padding, padding-bottom, padding-top, padding-left, padding-right, margin, margin-top, margin-bottom, margin-left, margin-right, margin-size, max-height, min-height, min-width, width, height, line-height, font-family, font-weight, font-size, text-align, color, fill, background-color, background-image");
             } else if (newValue.equalsIgnoreCase("pause(time)")) {
                 textToSend.clear();
                 textToSend.setDisable(false);
@@ -235,6 +257,8 @@ public class Controller implements Initializable {
             } else if (newValue.equalsIgnoreCase("switchToWindow(value)")) {
                 webDriverEnterUrl.setPromptText("Please enter the window name or handle from getWindowHandle() method");
                 webDriverEnterUrl.setDisable(false);
+            } else if (newValue.equalsIgnoreCase("switchNextWindow()")) {
+                webDriverEnterUrl.setDisable(true);
             } else if (newValue.equalsIgnoreCase("switchToFrame(value)")) {
                 webDriverEnterUrl.setPromptText("Please enter the frame name or id");
                 webDriverEnterUrl.setDisable(false);
@@ -377,5 +401,18 @@ public class Controller implements Initializable {
 
     public void ClearConsoleOutput(ActionEvent actionEvent) {
         consoleOutput.setText("");
+    }
+
+
+    private void switchToDarkMode() {
+        stackPane.setStyle("-fx-background-color: #212121;");
+        System.out.println("Switching to dark mode...");
+        // Modify other UI components' style properties to match dark mode
+    }
+
+    private void switchToLightMode() {
+        stackPane.setStyle("-fx-background-color: white;");
+        System.out.println("Switching to dark mode...");
+        // Modify other UI components' style properties to match light mode
     }
 }

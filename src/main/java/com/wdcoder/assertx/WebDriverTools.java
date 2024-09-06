@@ -1,7 +1,9 @@
 package com.wdcoder.assertx;
 
 //import io.github.bonigarcia.wdm.WebDriverManager;
+
 import org.openqa.selenium.*;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -10,12 +12,12 @@ import org.openqa.selenium.interactions.Actions;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class WebDriverTools {
 
     WebDriver driver;
+    Iterator<String> windows;
     private String browser = "chrome";
 
     public void initializeBrowser() throws InterruptedException {
@@ -197,7 +199,7 @@ public class WebDriverTools {
         // "getDomProperty()", "getShadowRoot()", "findElement()", "findElements()"
 
         //"hover()", "dragAndDrop()","doubleClick()","contextClick()",
-                // "moveToElement()"
+        // "moveToElement()"
 
         switch (selectAction) {
             case "click()":
@@ -232,6 +234,9 @@ public class WebDriverTools {
                 break;
             case "getCssValue(value)":
                 getCssValue(elementLocator, textToEnter);
+                break;
+            case "getCssProperties()":
+                getCssProperties(elementLocator);
                 break;
             case "getTagName()":
                 getTagName(elementLocator);
@@ -472,6 +477,9 @@ public class WebDriverTools {
             case "switchToWindow(value)":
                 driverSwitchToWindow(value);
                 break;
+            case "switchNextWindow()":
+                driverSwitchNextWindow();
+                break;
             case "alert().accept()":
                 driverAlertAccept();
                 break;
@@ -528,6 +536,21 @@ public class WebDriverTools {
         System.out.println("Switched to window of - " + value);
     }
 
+    private void driverSwitchNextWindow() {
+
+        if (windows == null){
+            windows = driver.getWindowHandles().iterator();
+        }
+
+        if(windows.hasNext()){
+            driver.switchTo().window(windows.next());
+            System.out.println("Switched to next window");
+        } else {
+            System.out.println("No more windows to switch to");
+            windows = null;
+        }
+    }
+
     private void driverSwitchToNewWindow(String value) {
         driver.switchTo().newWindow(WindowType.valueOf(value));
         System.out.println("Switched to new window of type - " + value);
@@ -541,11 +564,11 @@ public class WebDriverTools {
     private void driverSwitchToActiveElement() {
         WebElement element = driver.switchTo().activeElement();
         highlightElement(element);
-        System.out.println("Switched to active element which contains - "+ element.getText());
+        System.out.println("Switched to active element which contains - " + element.getText());
     }
 
     private void highlightElement(WebElement element) {
-        JavascriptExecutor js = (JavascriptExecutor)driver;
+        JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("argument[0].setAttribute(‘style’, ’background: yellow; border: 2px solid red; ’);", element);
     }
 
@@ -556,7 +579,7 @@ public class WebDriverTools {
 
     private void driverSwitchToFrame(String value) {
         driver.switchTo().frame(value);
-        System.out.println("Switched to frame - "+value);
+        System.out.println("Switched to frame - " + value);
     }
 
     private void driverDeleteAllCookies() {
@@ -566,19 +589,19 @@ public class WebDriverTools {
 
     private void driverGetCookieNamed(String value) {
         Cookie cookie = driver.manage().getCookieNamed(value);
-        System.out.println("Cookie with name - "+cookie.getName() + "and value - " + cookie.getValue()+" returned for the key - " + value);
+        System.out.println("Cookie with name - " + cookie.getName() + "and value - " + cookie.getValue() + " returned for the key - " + value);
     }
 
     private void driverDeleteCookie(String value) {
-        Cookie cookie = new Cookie(value.split(",")[0],value.split(",")[1]);
+        Cookie cookie = new Cookie(value.split(",")[0], value.split(",")[1]);
         driver.manage().deleteCookie(cookie);
-        System.out.println("Cookie with name - "+cookie.getName() + "and value - " + cookie.getValue()+" deleted successfully");
+        System.out.println("Cookie with name - " + cookie.getName() + "and value - " + cookie.getValue() + " deleted successfully");
     }
 
     private void driverAddCookie(String value) {
-        Cookie cookie = new Cookie(value.split(",")[0],value.split(",")[1]);
+        Cookie cookie = new Cookie(value.split(",")[0], value.split(",")[1]);
         driver.manage().addCookie(cookie);
-        System.out.println("Cookie with name - "+cookie.getName() + "and value - " + cookie.getValue()+" added successfully");
+        System.out.println("Cookie with name - " + cookie.getName() + "and value - " + cookie.getValue() + " added successfully");
     }
 
     private void driverGetCookies() {
@@ -588,16 +611,16 @@ public class WebDriverTools {
             System.out.println("No cookies found");
             return;
         }
-        for(Cookie cookie : driver.manage().getCookies()){
-            System.out.println("getDomain() - "+cookie.getDomain());
-            System.out.println("getExpiry() - "+cookie.getExpiry());
-            System.out.println("getName() - "+cookie.getName());
-            System.out.println("getPath() - "+cookie.getPath());
-            System.out.println("getSameSite() - "+cookie.getSameSite());
-            System.out.println("getValue() - "+cookie.getValue());
-            System.out.println("isHttpOnly() - "+cookie.isHttpOnly());
-            System.out.println("isSecure() - "+cookie.isSecure());
-            System.out.println("toJson() - "+cookie.toJson());
+        for (Cookie cookie : driver.manage().getCookies()) {
+            System.out.println("getDomain() - " + cookie.getDomain());
+            System.out.println("getExpiry() - " + cookie.getExpiry());
+            System.out.println("getName() - " + cookie.getName());
+            System.out.println("getPath() - " + cookie.getPath());
+            System.out.println("getSameSite() - " + cookie.getSameSite());
+            System.out.println("getValue() - " + cookie.getValue());
+            System.out.println("isHttpOnly() - " + cookie.isHttpOnly());
+            System.out.println("isSecure() - " + cookie.isSecure());
+            System.out.println("toJson() - " + cookie.toJson());
             System.out.println("-------------------------------------------------");
         }
     }
@@ -623,8 +646,8 @@ public class WebDriverTools {
     }
 
     private void driverGetWindowHandles() {
-        for (String windowHandle : driver.getWindowHandles()){
-            System.out.println(windowHandle+"\n");
+        for (String windowHandle : driver.getWindowHandles()) {
+            System.out.println(windowHandle + "\n");
         }
     }
 
@@ -669,9 +692,9 @@ public class WebDriverTools {
         WebElement element = driver.findElement(By.xpath(xpath));
         try {
             String attributeValue = element.getAttribute(attributeName);
-            System.out.println("Attribute "+attributeName+"'s value: " + attributeValue);
+            System.out.println("Attribute " + attributeName + "'s value: " + attributeValue);
         } catch (NullPointerException e) {
-            System.out.println("Element does not have the '"+attributeName+"' attribute");
+            System.out.println("Element does not have the '" + attributeName + "' attribute");
         }
     }
 
@@ -679,11 +702,33 @@ public class WebDriverTools {
         WebElement element = driver.findElement(By.xpath(xpath));
         try {
             String cssValue = element.getCssValue(cssPropertyName);
-            System.out.println("CSS "+cssPropertyName+"'s value : " + cssValue);
+            System.out.println("CSS " + cssPropertyName + "'s value : " + cssValue);
         } catch (NullPointerException e) {
-            System.out.println("Element does not have the '"+cssPropertyName+"' CSS property");
+            System.out.println("Element does not have the '" + cssPropertyName + "' CSS property");
         }
     }
+
+private void getCssProperties(String elementLocator) {
+    WebElement element = driver.findElement(By.xpath(elementLocator));
+    Map<String, String> cssProperties = new HashMap<>();
+
+    // List of CSS property keys
+    List<String> cssPropertyKeys = Arrays.asList(
+        "border-top-color", "border-right-color", "border-bottom-color", "border-left-color",
+        "border-right", "border-bottom", "border-left", "border-top-right-radius",
+        "border-bottom-right-radius", "border-width", "border-top", "border-left-color",
+        "border-right-color", "padding", "padding-bottom", "padding-top", "padding-left",
+        "padding-right", "margin", "margin-top", "margin-bottom", "margin-left",
+        "margin-right", "margin-size", "max-height", "min-height", "min-width",
+        "width", "height", "line-height", "font-family", "font-weight", "font-size",
+        "text-align", "color", "fill", "background-color", "background-image"
+    );
+
+    for (String key : cssPropertyKeys) {
+        String value = element.getCssValue(key);
+        System.out.println(key + " : " + value);
+    }
+}
 
     public void getTagName(String xpath) {
         WebElement element = driver.findElement(By.xpath(xpath));
@@ -1194,7 +1239,6 @@ public class WebDriverTools {
 // ...
 
 
-
     public static void main(String[] args) {
         WebDriverTools webDriverTools = new WebDriverTools();
         try {
@@ -1208,5 +1252,6 @@ public class WebDriverTools {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-    }}
+        }
+    }
 }
